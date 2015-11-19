@@ -5,7 +5,7 @@ print("Welcome to the Prep Data program.")
 #print("file path is: %s" % userInput)
 #f = open(userInput, 'r')
 f = open("./data/10.txt", 'r')
-index=1
+index=0
 eof = 0
 line = f.readline()
 while (eof == 0):
