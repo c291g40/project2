@@ -1,12 +1,12 @@
 import sys
 import phase1
 
-def main ():
+def main (fileName):
 	print("Welcome to the Prep Data program.")
 	#userInput = input("Please enter the full path of the file: ")
 	#print("file path is: %s" % userInput)
 	#f = open(userInput, 'r')
-	f = open("./data/10.txt", 'r')
+	f = open(fileName, 'r')
 
 	#clears output files if exists 
 	open("./reviews.txt", 'w').close()
@@ -82,5 +82,5 @@ def replaceQuoteSlash (inputString):
 	outputString = inputString.replace('"', '&quot;').replace('\\', '\\\\')
 	return (outputString)
 
- 
-main()
+#fileName = input("Please enter the full path of the file: ")
+#main (fileName)
