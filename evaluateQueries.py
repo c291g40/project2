@@ -1,4 +1,8 @@
 from bsddb3 import db 
+import time
+import datetime
+from io import StringIO
+import csv
 
 def evaluateQuery (queryType, queryOperator, queryCond):
         
@@ -23,6 +27,8 @@ def evaluateQuery (queryType, queryOperator, queryCond):
         matchingRecords1 = termsSearch ("pt.idx", queryOperator, queryCond)
         matchingRecords2 = termsSearch ("rt.idx", queryOperator, queryCond)
         matchingRecords = matchingRecords1 + matchingRecords2
+        
+    return(matchingRecords)
     
 def termsSearch (fileName, queryOperator, queryCond):
     matchingRecords = []
@@ -43,7 +49,27 @@ def termsSearch (fileName, queryOperator, queryCond):
     return(matchingRecords)
     
 def priceSearch ():
-    pass
+    queryCond = time.mktime(datetime.datetime.strptime(queryCond, "%d/%m/%Y").timetuple())
+    matchingRecords = []
+   
+    reviewsDB = db.DB()
+    reviewsDB.open("rw.idx")
+    
+    cursor = reviewsDB.cursor()
+    current = cursor.first()
+    while current:
+        productPrice = getProductPrice(current[1].decode("utf-8"))
+        if queryOperator == ">":
+            if float(productPrice) > queryCond:
+                matchingRecords.append(current[0].decode("utf-8"))
+        elif queryOperator == "<":
+            if float(productPrice) < queryCond:
+                matchingRecords.append(current[0].decode("utf-8"))            
+        current = cursor.next()    
+    cursor.close()
+    reviewsDB.close()
+    
+    return(matchingRecords)    
     
 def scoreSearch (queryMin, queryMax):
     matchingRecords = []
@@ -68,5 +94,35 @@ def scoreSearch (queryMin, queryMax):
     
     return(matchingRecords)
     
-def dateSearch ():
-    pass
+def dateSearch (queryOperator, queryCond):
+    queryCond = time.mktime(datetime.datetime.strptime(queryCond, "%d/%m/%Y").timetuple())
+    matchingRecords = []
+   
+    reviewsDB = db.DB()
+    reviewsDB.open("rw.idx")
+    
+    cursor = reviewsDB.cursor()
+    current = cursor.first()
+    while current:
+        reviewDate = getReviewDate(current[1].decode("utf-8"))
+        if queryOperator == ">":
+            if float(reviewDate) > queryCond:
+                matchingRecords.append(current[0].decode("utf-8"))
+        elif queryOperator == "<":
+            if float(reviewDate) < queryCond:
+                matchingRecords.append(current[0].decode("utf-8"))            
+        current = cursor.next()    
+    cursor.close()
+    reviewsDB.close()
+    
+    return(matchingRecords)    
+
+def getReviewDate (review):
+    reviewFile = StringIO(review)
+    reader = csv.reader(f, delimiter=',')
+    return(reader[7])
+
+def getProductPrice (review):
+    reviewFile = StringIO(review)
+    reader = csv.reader(f, delimiter=',')
+    return(reader[2])
