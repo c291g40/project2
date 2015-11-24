@@ -13,7 +13,9 @@ def main ():
 		conditionsList = ["p:","r:","pprice","rscore","rdate"]
 		titleCond = []
 		reviewCond = []
-		list3 = []
+		priceCond = []
+		scoreCond = []
+		dateCond = []
 		reviewTitleCond = []
 		
 		for term in range(len(splitQuery)):
@@ -40,12 +42,19 @@ def main ():
 				else:
 					condition = splitQuery[term]
 					splitQuery[term] = ""
-				list3.append(condition)
+				if "pprice" in condition:
+					priceCond.append(condition)
+				elif "rscore" in condition:
+					scoreCond.append(condition)
+				elif "rdate" in condition:
+					dateCond.append(condition)
+				
 
 		for term in splitQuery:
 			if term != "":
 				reviewTitleCond.append(term)
 
-		print(titleCond,reviewCond,list3,reviewTitleCond)
+		print("titleCond,reviewCond,priceCond,scoreCond,dateCond,reviewTitleCond")
+		print(titleCond,reviewCond,priceCond,scoreCond,dateCond,reviewTitleCond)
 		
 main()
