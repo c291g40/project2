@@ -1,11 +1,9 @@
 #!/bin/bash 
 
-# there might be problems with the buffer/ stuff out of order. check
-# use duplicates or duplicate sort?
-
 # remove existing index files
 rm *.idx
 
+# creates index files using supplied script break.pl
 cat reviews.txt | perl break.pl | db_load -c duplicates=1 -T -t hash rw.idx
 sort --unique pterms.txt | perl break.pl | db_load -c duplicates=1 -T -t btree pt.idx
 sort --unique rterms.txt | perl break.pl | db_load -c duplicates=1 -T -t btree rt.idx

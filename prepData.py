@@ -8,7 +8,7 @@ def main (fileName):
 	#f = open(userInput, 'r')
 	f = open(fileName, 'r')
 
-	#clears output files if exists 
+	#clears output files if they already exist
 	open("./reviews.txt", 'w').close()
 	open("./pterms.txt", 'w').close()
 	open("./rterms.txt", 'w').close()
@@ -52,6 +52,7 @@ def main (fileName):
 				print("__________________END")
 			
 
+			# replaces quotes and slashes from the file
 			productID = replaceQuoteSlash (productID)
 			productTitle = replaceQuoteSlash (productTitle)
 			productPrice = replaceQuoteSlash (productPrice)
@@ -78,9 +79,10 @@ def main (fileName):
 		
 	f.close()
 
+# this function replaces quotes and slashes in strings
 def replaceQuoteSlash (inputString):
 	outputString = inputString.replace('"', '&quot;').replace('\\', '\\\\')
 	return (outputString)
 
-#fileName = input("Please enter the full path of the file: ")
-#main (fileName)
+fileName = input("Please enter the full path of the file: ")
+main (fileName)

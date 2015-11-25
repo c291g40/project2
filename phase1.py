@@ -31,7 +31,7 @@ def makeTermsFile (fullString, recordId, fileName):
 	
 	# converts string to char list for parsing
 	charList = list(fullString)
-	charList.append("$")
+	charList.append("$") # add extra char so last term is output
 	
 	# iterates over string and appends valid terms to file
 	appendString = ""
